@@ -2,7 +2,8 @@
   <div class="hero-content flex-col lg:flex-row-reverse">
     <div class="text-center lg:text-left">
       <h1 class="text-5xl font-bold">Regsiter now!</h1>
-      <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+      <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi.
+        In deleniti eaque aut repudiandae et a id nisi.</p>
     </div>
     <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
       <form class="card-body" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -10,34 +11,60 @@
           <label class="label">
             <span class="label-text">Name</span>
           </label>
-          <input type="text" placeholder="name" class="input input-bordered" required />
+          <input type="text" placeholder="name" formControlName="name" class="input input-bordered "
+            [class]="{'border-error':f['name'].invalid && f['name'].touched}" />
+          <label *ngIf="f['name'].touched && f['name'].invalid" class="label">
+            <p *ngIf="f['name'].errors && f['name'].errors['required']"
+              class="label-text-alt link link-hover text-error">Name is required</p>
+            <p *ngIf="f['name'].errors && f['name'].errors['minlength']"
+              class="label-text-alt link link-hover text-error">Name should have at least 5 letter</p>
+          </label>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">Email</span>
           </label>
-          <input type="email" placeholder="email" class="input input-bordered" required />
+          <input type="email" placeholder="email" formControlName="email" class="input input-bordered"
+            [class]="{'border-error':f['email'].invalid && f['email'].touched}" />
+          <label class="label" *ngIf="f['email'].touched && f['email'].invalid">
+            <p *ngIf="f['email'].errors && f['email'].errors['required']"
+              class="label-text-alt link link-hover text-error">Email is required</p>
+            <p *ngIf="f['email'].errors && f['email'].errors['email']"
+              class="label-text-alt link link-hover text-error">Invalid emial.</p>
+            <p *ngIf="f['email'].errors && f['email'].errors['alreadyExits']"
+              class="label-text-alt link link-hover text-error">Email already used</p>
+          </label>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">Password</span>
           </label>
-          <input type="password" placeholder="password" class="input input-bordered" required />
-          <label class="label">
-            <a href="#" class="label-text-alt link link-hover text-error"></a>
+          <input type="password" placeholder="password" formControlName="password" class="input input-bordered"
+            [class]="{'border-error':f['password'].invalid && f['password'].touched}" />
+          <label class="label" *ngIf="f['password'].touched && f['password'].invalid">
+            <p *ngIf="f['password'].errors && f['password'].errors['required']"
+              class="label-text-alt link link-hover text-error">Password is required</p>
+            <p *ngIf="f['password'].errors && f['password'].errors['invalidPassword']"
+              class="label-text-alt link link-hover text-error">It should contain at least one uppercase letter (A-Z),
+              It should contain at least one lowercase letter (a-z),
+              It should contain at least one digit (0-9) and
+              It should be at least 8 characters long</p>
           </label>
         </div>
         <div class="form-control">
           <label class="label">
-            <span class="label-text">Re-Password</span>
+            <span class="label-text">Confirm Password</span>
           </label>
-          <input type="password" placeholder="password" class="input input-bordered" required />
-          <label class="label">
-            <a href="#" class="label-text-alt link link-hover text-error"></a>
+          <input type="password" placeholder="password" formControlName="rePassword" class="input input-bordered" />
+          <label class="label" *ngIf="f['rePassword'].touched && f['rePassword'].invalid">
+            <p *ngIf="f['rePassword'].errors && f['rePassword'].errors['required']"
+              class="label-text-alt link link-hover text-error">Confirm Password is required</p>
+            <p *ngIf="f['rePassword'].errors && f['rePassword'].errors['confirmedValidator']"
+              class="label-text-alt link link-hover text-error">Passwords doesnot match</p>
           </label>
         </div>
         <div class="form-control mt-6">
-          <button class="btn btn-primary">Regsiter</button>
+          <button class="btn btn-primary" [disabled]="registerForm.invalid" type="submit">Regsiter</button>
         </div>
         <a class="btn-link" routerLink="/auth">Login</a>
       </form>
